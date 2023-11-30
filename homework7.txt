@@ -1,0 +1,60 @@
+Задание
+• Установить в виртуальную машину или VDS Docker, настроить набор контейнеров через docker compose по инструкции.
+Часть с настройкой certbot и HTTPS опустить, если у вас нет настоящего домена и белого IP.
+
+sudo apt install docker.io docker-compose -y
+sudo ss -ntlp
+cd
+mkdir wordpress && cd wordpress
+mkdir nginx-conf
+sudo nano nginx-conf/nginx.conf
+sudo nano .env
+sudo nano docker-compose.yml
+
+wordpress:
+   ports:
+      - "3307:3306"
+
+webserver:
+   ports:
+      - "81:80"
+
+sudo nano .dockerignore
+
+.git
+.env
+.dockerignore
+docker-compose.yml
+
+sudo docker-compose up -d
+sudo docker ps
+
+sudo ss -ntlp
+
+http://localhost:81/wp-admin/install.php
+ 
+sudo docker-compose down
+
+
+• Запустить два контейнера, связанные одной сетью (используя документацию.
+Первый контейнер БД (например, образ mariadb:10.8), второй контейнер — phpmyadmin.
+Получить доступ к БД в первом контейнере через второй контейнер (веб-интерфейс phpmyadmin.
+
+
+sudo docker network create maria_network
+sudo docker pull mariadb:10.8
+
+sudo docker pull phpmyadmin
+
+sudo docker images
+
+sudo docker run -d --name mariadb --network maria_network -e MYSQL_ROOT_PASSWORD=password1 mariadb:10.8
+
+sudo docker run -d --name phpmyadmin --network maria_network -e PMA_HOST=mariadb -p 8000:80 phpmyadmin
+
+
+http://localhost:8000
+root
+password1
+
+ 

@@ -1,0 +1,65 @@
+Задание
+
+• Подключить дополнительный репозиторий на выбор: Docker, Nginx, Oracle MySQL. Установить любой пакет из этого репозитория.
+
+sudo apt update
+sudo apt install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+sudo docker run hello-world
+
+• Установить и удалить deb-пакет с помощью dpkg.
+
+wget https://download.virtualbox.org/virtualbox/7.0.12/virtualbox-7.0_7.0.12-159484~Ubuntu~jammy_amd64.deb
+
+sudo nano /etc/apt/sources.list.d/vbox.list
+
+Вписать в файл
+deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian jammy contrib
+
+wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg
+
+sudo dpkg -i virtualbox-7.0_7.0.12-159484~Ubuntu~jammy_amd64.deb
+sudo apt --fix-broken install
+sudo dpkg -i virtualbox-7.0_7.0.12-159484~Ubuntu~jammy_amd64.deb
+
+sudo apt list --installed
+
+sudo dpkg -r virtualbox-7.0 
+sudo apt autoremove
+
+• Установить и удалить snap-пакет.
+
+sudo snap install telegram-desktop
+sudo snap --help
+sudo snap remove telegram-desktop
+
+
+• Добавить задачу для выполнения каждые 3 минуты (создание директории, запись в файл).
+
+crontab --help
+crontab -e
+
+*/3 * * * * mkdir -p /tmp/homework4 && echo "Hello world!">>/tmp/homework4/homework4.log
+
+
+•* Подключить PPA-репозиторий на выбор. Установить из него пакет. Удалить PPA из системы.
+
+•* Создать задачу резервного копирования (tar) домашнего каталога пользователя. Реализовать с использованием пользовательских crontab-файлов.
+
+Результат
+
+Текст команд, которые применялись при выполнении задания.
+При наличи: часть конфигурационных файлов, которые решают задачу.
+Присылаем в формате текстового документа: задание и команды для решения (без вывода).
+Формат — PDF (один файл на все задания).

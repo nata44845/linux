@@ -1,0 +1,94 @@
+Урок 6. Запуск стека для веб-приложения
+Задание
+
+• Установить Nginx и настроить его на работу с PHP-FPM.
+
+sudo apt install nginx -y
+sudo apt install php8.1 -y
+sudo apt install php8.1-fpm -y
+
+cd /etc/php/8.1/fpm/pool.d
+sudo nano www.conf
+
+cd /etc/nginx/sites-enabled
+ll
+sudo nano default
+
+location ~ \.php$ {
+	include snippets/fastcgi-php.conf;
+	root /var/www/html;
+	fastcgi_pass unix:/run/php/php8.1-fpm.sock;
+}
+
+sudo systemctl reload nginx
+
+cd /var/www/html
+ll
+sudo nano info.php
+
+<?php
+phpinfo();
+?>
+
+http://localhost/info.php
+
+• Установить Apache. Настроить обработку PHP. Добиться одновременной работы с Nginx.
+
+sudo apt install apache2
+
+cd /etc/apache2
+sudo nano ports.conf
+Listen 8080
+
+sudo systemctl start apache2
+http://localhost:8080/
+http://localhost:8080/info.php
+
+• Настроить схему обратного прокси для Nginx (динамика - на Apache).
+
+cd /etc/nginx/sites-enabled
+sudo nano default
+
+#       location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+#               try_files $uri $uri/ =404;
+#       }
+
+
+        location / {
+                proxy_pass http://localhost:8080;
+                proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Real-IP $remote_addr;
+        }
+
+
+        location ~* ^.+.(jpg|jpeg|gif|png|ico|css|zip|pdf|txt|tar|js)$ {
+                root /var/www/html;
+        }
+
+#       location ~ \.php$ {
+#               include snippets/fastcgi-php.conf;
+#               root /var/www/html;
+#               fastcgi_pass unix:/run/php/php8.1-fpm.sock;
+#       }
+
+sudo systemctl reload nginx
+http://localhost/info.php
+
+sudo ss -ntlp
+
+• Установить MySQL. Создать новую базу данных и таблицу в ней.
+
+sudo apt install mysql-server -y
+
+sudo mysql
+CREATE DATABASE gb;
+use gb;
+
+CREATE TABLE users (id INT, name TEXT, age INT);
+
+
+•* Установить пакет phpmyadmin и запустить его веб-интерфейс для управления MySQL.
+•* Настроить схему балансировки трафика между несколькими серверами Apache на стороне Nginx с помощью модуля ngx_http_upstream_module.

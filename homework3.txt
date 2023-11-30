@@ -1,0 +1,136 @@
+mkdir homework3
+cd homework3
+
+Задание
+
+• Создать два произвольных файла.
+Первому присвоить права на чтение и запись для владельца и группы, только на чтение — для всех.
+Второму присвоить права на чтение и запись только для владельца. Сделать это в численном и символьном виде.
+Назначить новых владельца и группу для директории целиком.
+rw-rw-r-- 664
+rw-------  500  
+
+
+cat>file1
+cat>file2
+ll
+chmod 664 file1
+ll
+chmod g-r file2
+chmod g-w file2
+chmod o-r file2
+
+cd ..
+ll
+sudo chown olga homework3
+sudo chgrp super_users homework3
+
+Управление пользователями:
+* создать пользователя, используя утилиту useradd и adduser;
+* удалить пользователя, используя утилиту userdel.
+
+sudo useradd hw3 -m -d /home/hw3 -s /bin/bash
+sudo passwd hw3
+
+sudo adduser hw32
+
+sudo userdel hw32
+
+cat /etc/passwd
+
+
+
+Управление группами:
+
+• создать группу с использованием утилит groupadd и addgroup;
+попрактиковаться в смене групп у пользователей;
+добавить пользователя в группу, не меняя основной;
+
+sudo groupadd hw3group
+sudo addgroup hw3group2
+
+sudo usermod -g hw3group hw3
+sudo usermod -aG hw3group2 hw3
+cat /etc/passwd
+cat /etc/group
+
+• Создать пользователя с правами суперпользователя. Сделать так, чтобы sudo не требовал пароль для выполнения команд.
+
+sudo visudo
+hw3    ALL=(ALL) NOPASSWD: ALL
+
+su hw3
+sudo apt remove mc
+
+
+
+Дополнительные (необязательные) задания
+
+• Используя дополнительные материалы, выдать одному из созданных пользователей право на выполнение ряда команд, требующих прав суперпользователя (команды выбираем на своё усмотрение).
+
+sudo visudo
+
+olga ALL=/usr/sbin/adduser
+
+su olga
+
+sudo adduser hw32
+
+exit
+
+• Создать группу developer и нескольких пользователей, входящих в неё.
+
+sudo groupadd developer
+sudo useradd --help
+sudo useradd -m hw3_dev1 -G developer
+sudo useradd -m hw3_dev2 -G developer
+sudo useradd -m hw3_dev3 -G developer
+cat /etc/passwd
+cat /etc/group
+
+Создать директорию для совместной работы.
+
+mkdir developer
+sudo chgrp developer developer
+
+Сделать так, чтобы созданные одними пользователями файлы могли изменять другие пользователи этой группы.
+
+sudo chmod 770 developer
+
+• Создать в директории для совместной работы поддиректорию для обмена файлами, но чтобы удалять файлы могли только их создатели.
+
+cd developer
+mkdir shared
+
+sudo chgrp developer shared
+sudo chmod 770 shared
+sudo chmod +t shared
+
+• Создать директорию, в которой есть несколько файлов.
+
+
+mkdir test
+cd test
+cat>file1
+cat>file2
+
+Сделать так, чтобы открыть файлы можно было, только зная имя файла, а через ls список файлов посмотреть было нельзя.
+
+cd ..
+sudo chmod 331 test
+cd test
+
+Результат
+
+ll
+ls: невозможно открыть каталог '.': Отказано в доступе
+cat file1
+111
+
+Текст команд, которые применялись при выполнении задания.
+Присылаем в формате текстового документа: задание и команды для решения (без вывода).
+Формат — PDF (один файл на все задания).
+
+
+
+

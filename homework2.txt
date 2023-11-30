@@ -1,0 +1,68 @@
+• Используя команду cat, создать два файла с данными, а затем объединить их.
+Просмотреть содержимое созданного файла.
+Переименовать файл, дав ему новое имя.
+mkdir homework2
+cd homework2
+ ll
+cat > file1
+cat > file2
+cat file1
+cat file2
+cat file1 file2 > file3
+cat file3
+mv file3 file3_new
+
+• Создать несколько файлов.
+Создать директорию, переместить файл туда.
+Удалить все созданные в этом и предыдущем задании директории и файлы.
+cat > file3
+cat > file4
+mkdir task2
+ll
+mv file3 task2/file3
+ll
+rm file1
+rm file2
+rm file3_new
+rm file4
+ll
+rm -r task2
+ll
+
+
+• Создать файл file1 и наполнить его произвольным содержимым.
+Скопировать его в file2.
+Создать символическую ссылку file3 на file1.
+Создать жёсткую ссылку file4 на file1.
+Посмотреть, какие айноды у файлов.
+Удалить file1.
+Что стало с остальными созданными файлами?
+Попробовать вывести их на экран.
+
+cat > file1
+cat file1
+cp file1 file2
+ll
+ln -s file1 file3
+ln file1 file4
+ls -ali
+rm file1
+ls -ali
+cat file2
+cat file4
+cat file3
+
+• Дать созданным файлам другие, произвольные имена.
+Создать новую символическую ссылку.
+Переместить ссылки в другую директорию.
+mv file2 file2_other
+mv file4 file4_other
+mv file3 file3_other
+ls -ali
+ln -s file2_other file2_lnk
+ll
+mkdir task4
+mv file2_lnk task4/file2_lnk
+mv file3_other task4/file3_other
+ll
+history > homework2.txt
