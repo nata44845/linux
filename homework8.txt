@@ -1,0 +1,107 @@
+Урок 8. Скрипты Bash
+Задание
+
+• Написать скрипт очистки директорий.
+На вход принимает путь к директории.
+Если директория существует, то удаляет в ней все файлы с расширениями .bak, .tmp, .backup.
+Если директории нет, то выводит ошибку.
+
+
+cd gblinux/sem8
+nano rmtmp
+
+
+                                              
+#!/usr/bin/bash
+
+if (( $# == 0 )); then
+  echo "Недостаточно аргументов"
+  exit
+fi
+
+if [ -d $1 ]; then
+  find $1 -type f \( -name "*.bak" -o -name "*.tmp" -o -name "*.backup" \) -delete
+  if (($?==0)); then
+        echo "Файлы удалены"
+  fi
+else
+  echo "Директория "$1" не существует"
+fi
+
+chmod +x rmtmp
+./rmtmp
+
+./rmtmp /home/nata44845/gblinu
+
+./rmtmp /home/nata44845/gblinux
+
+
+
+• Создать скрипт ownersort.sh, который в заданной папке копирует файлы в директории, названные по имени владельца каждого файла.
+Учтите, что файл должен принадлежать соответствующему владельцу.
+
+
+nano ownersort.sh
+
+                                                               
+#!/usr/bin/bash
+
+if (( $# == 0 )); then
+  echo "Недостаточно аргументов"
+  exit
+fi
+
+if [ -d "$1" ]; then
+  for file in "$1"/*; do
+   if [ -f "$file" ]; then
+    owner=$(stat -c %U "$file")
+    mkdir -p "$1/$owner"
+    cp "$file" "$1/$owner"
+   fi
+  done
+
+  if (($?==0)); then
+        echo "Копирование файлов завершено"
+  fi
+else
+  echo "Директория "$1" не существует"
+fi
+
+chmod +x ownersort.sh
+
+mkdir test
+cd test
+cat>file1
+cat>file2
+
+ll -ali
+
+cat /etc/passwd
+
+sudo chown nobody file2
+
+ 
+cd ..
+./ownersort.sh
+./ownersort.sh /home/nata44845/gblinux/sem8/tes
+./ownersort.sh /home/nata44845/gblinux/sem8/test
+
+ll
+cd test
+ll
+cd nobody
+ll
+
+
+Результат
+Код скриптов в текстовом виде (каждый скрипт в отдельном файле).
+Кодировка файлов UTF-8.
+
+Данная промежуточная аттестация оценивается по системе «зачёт» / «не зачёт»
+— «Зачёт» ставится, если Слушатель успешно выполнил задание 1 или 2 задания
+— «Незачёт» ставится, если Слушатель не выполнил задание.
+
+Критерии оценивания
+
+1 — Слушатель написал скрипт очистки директорий
+2 — Слушатель создал скрипт ownersort.sh
